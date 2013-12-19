@@ -83,15 +83,23 @@ class AttestationManager(base.ManagerWithFind):
         return self._update("/users/%s/OS-KSADM/tenant" % base.getid(user),
                             params, "user")
 
-    def create(self, hostname, pcrs, auth_type, uuid, pkey, pure_hash):
+    def create(self, hostname, pcrs, auth_type, uuid, pkey, pure_hash, service):
         """Create a host key entity."""
         params = {"key_data": {"hostname": hostname,
                            "PCRs": pcrs,
                            "auth_type": auth_type,
                            "uuid": uuid,
                            "pkey": pkey,
-                           "pure_hash": pure_hash}}
+                           "pure_hash": pure_hash,
+                           "service": service}}
         return self._create('/attestation', params, "key_id", return_raw=True)
+
+    def find(self, hostname, service):
+        """Create a host key entity."""
+        params = {"key_data": {"hostname": hostname,
+                           "service": service}}
+        return self._post('/attestation/find', params, "key_data", return_raw=True)
+
 
     def delete(self, user):
         """Delete a user."""
