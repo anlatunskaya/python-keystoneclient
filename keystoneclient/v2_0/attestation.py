@@ -100,6 +100,14 @@ class AttestationManager(base.ManagerWithFind):
                            "service": service}}
         return self._post('/attestation/find', params, "key_data", return_raw=True)
 
+    def validate(self, id, salted_hash, salt):
+        """Create a host key entity."""
+        params = {"key_data": {"id": id,
+                           "salted_hash": salted_hash,
+                           "salt": salt}}
+        url='/attestation/validate'
+        return self._post(url, params, "key_data", return_raw=True)
+
 
     def delete(self, user):
         """Delete a user."""
